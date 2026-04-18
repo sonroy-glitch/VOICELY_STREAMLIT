@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+
+<html class="scroll-smooth" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Voicely — Hear Yourself Speak Perfectly</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=Inter:wght@400;500;600&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#404040",
+                        "secondary": "#4F4F4F",
+                        "accent": "#4F4F4F",
+                        "surface": "#FFFFFF",
+                        "background": "#F9F9F9"
+                    },
+                    fontFamily: {
+                        "headline": ["Plus Jakarta Sans", "sans-serif"],
+                        "body": ["Plus Jakarta Sans", "sans-serif"],
+                    },
+                },
+            },
+        }
+    </script>
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+
+        .btn-primary {
+            background-color: #4A4A4A;
+            color: white;
+            transition: opacity 0.2s;
+        }
+
+        .btn-primary:hover {
+            opacity: 0.9;
+        }
+
+        .btn-secondary {
+            background-color: white;
+            color: #4A4A4A;
+            border: 1px solid #E5E5E5;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05);
+        }
+
+        .feature-card {
+            background: white;
+            border-radius: 24px;
+            padding: 40px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+            border: 1px solid #F0F0F0;
+        }
+
+        .bento-card {
+            background: white;
+            border-radius: 20px;
+            padding: 32px;
+            border: 1px solid #F0F0F0;
+        }
+
+        .hero-badge {
+            background: #F3F4F6;
+            padding: 6px 16px;
+            border-radius: 9999px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            color: #4B5563;
+        }
+    </style>
+<style>html, body { overflow-y: auto !important; height: 100vh !important; min-height: 100vh !important; }</style>\n<script src="./streamlit-component-lib.js"></script>\n</head>
+
+<body class="bg-[#F9F9F9] font-body text-[#1A1A1A] antialiased">
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full z-50 bg-white/80 backdrop-blur-md border-b border-gray-100">
+        <div class="max-w-7xl mx-auto px-6 h-20 flex justify-between items-center">
+            <div class="flex items-center gap-2">
+                <div class="w-10 h-10 bg-[#4A4A4A] rounded-full flex items-center justify-center">
+                    <span class="material-symbols-outlined text-white text-xl"
+                        style="font-variation-settings: 'FILL' 1;">mic</span>
+                </div>
+                <span class="text-xl font-bold tracking-tight text-[#1A1A1A]">Voicely</span>
+            </div>
+            <div class="hidden md:flex items-center gap-10">
+                <a class="text-[15px] font-medium text-gray-500 hover:text-gray-900 transition-colors"
+                    href="#">Features</a>
+                <a class="text-[15px] font-medium text-gray-500 hover:text-gray-900 transition-colors" href="#">Who It's
+                    For</a>
+            </div>
+            <a href="#" onclick="sendDataToStreamlit({action: 'go_login'}); return false;"
+                class="bg-[#4A4A4A] text-white px-6 py-2.5 rounded-xl font-bold text-[14px] hover:bg-[#333333] transition-colors no-underline">
+                Get Started — Free
+            </a>
+        </div>
+    </nav>
+    <main>
+        <!-- Hero Section -->
+        <section class="pt-48 pb-24 px-6 text-center">
+            <div class="max-w-4xl mx-auto">
+                <div class="hero-badge mb-10 mx-auto">
+                    <span class="material-symbols-outlined text-[18px]">auto_awesome</span>
+                    AI-Powered Voice Cloning for Language Learning
+                </div>
+                <h1 class="text-5xl sm:text-[72px] md:text-[84px] font-bold text-[#1A1A1A] leading-[1.05] tracking-tight mb-8">
+                    Hear Yourself Speak <br /> Perfectly.
+                </h1>
+                <p class="text-[18px] md:text-[20px] text-gray-500 max-w-[720px] mx-auto mb-12 leading-relaxed">
+                    Type any text and hear it in your own cloned voice — with flawless pronunciation. Learn any language
+                    with AI that adapts to your voice, your pace, your goals. Completely free.
+                </p>
+                <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+                    <a href="#" onclick="sendDataToStreamlit({action: 'go_login'}); return false;"
+                        class="bg-[#4A4A4A] text-white px-10 py-5 rounded-2xl font-bold text-[17px] flex items-center gap-2 shadow-lg shadow-black/10 hover:translate-y-[-1px] transition-all no-underline">
+                        Start Learning Free <span class="material-symbols-outlined text-[20px]">arrow_forward</span>
+                    </a>
+                    <a href="#" onclick="sendDataToStreamlit({action: 'go_login'}); return false;"
+                        class="bg-white text-[#4A4A4A] px-10 py-5 rounded-2xl font-bold text-[17px] border border-gray-200 flex items-center gap-2 shadow-sm hover:bg-gray-50 transition-all no-underline">
+                        <span class="material-symbols-outlined text-[20px]"
+                            style="font-variation-settings: 'FILL' 1;">play_circle</span>
+                        Try Demo
+                    </a>
+                </div>
+            </div>
+        </section>
+        <!-- Visual Showcase -->
+        <section class="max-w-5xl mx-auto px-6 mb-40">
+            <div
+                class="bg-white rounded-[40px] p-6 sm:p-12 shadow-[0_20px_60px_-15px_rgba(0,0,0,0.05)] border border-gray-100">
+                <div class="flex items-start gap-5 mb-10">
+                    <div class="w-14 h-14 bg-[#4A4A4A] rounded-full flex items-center justify-center">
+                        <span class="material-symbols-outlined text-white text-2xl"
+                            style="font-variation-settings: 'FILL' 1;">mic</span>
+                    </div>
+                    <div class="flex-1">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <h3 class="text-lg font-bold text-[#1A1A1A]">Your Voice Profile</h3>
+                                <p class="text-gray-500 text-sm">American English · Clarity 94%</p>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <span class="w-2 h-2 bg-emerald-500 rounded-full"></span>
+                                <span class="text-emerald-500 font-bold text-sm">Ready</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-gray-50 rounded-2xl p-8 mb-10 border border-gray-100/50">
+                    <p class="text-xl font-medium text-gray-700 mb-2">"The weather is beautiful today."</p>
+                    <p class="text-gray-400">Type anything — hear it in your voice.</p>
+                </div>
+                <div class="flex items-center gap-4 mb-10">
+                    <div class="flex items-end gap-1.5 h-16 w-full max-w-md">
+                        <div class="w-1.5 bg-gray-300 rounded-full h-[40%]"></div>
+                        <div class="w-1.5 bg-gray-400 rounded-full h-[60%]"></div>
+                        <div class="w-1.5 bg-gray-400 rounded-full h-[50%]"></div>
+                        <div class="w-1.5 bg-[#4A4A4A] rounded-full h-[100%]"></div>
+                        <div class="w-1.5 bg-gray-500 rounded-full h-[70%]"></div>
+                        <div class="w-1.5 bg-gray-400 rounded-full h-[40%]"></div>
+                        <div class="w-1.5 bg-gray-300 rounded-full h-[30%]"></div>
+                        <div class="w-1.5 bg-gray-400 rounded-full h-[45%]"></div>
+                        <div class="w-1.5 bg-gray-500 rounded-full h-[65%]"></div>
+                        <div class="w-1.5 bg-gray-400 rounded-full h-[35%]"></div>
+                        <div class="w-1.5 bg-gray-300 rounded-full h-[25%]"></div>
+                    </div>
+                </div>
+                <div class="flex flex-wrap gap-2">
+                    <span
+                        class="px-4 py-1.5 bg-emerald-50 text-emerald-600 rounded-full text-sm font-semibold border border-emerald-100">The</span>
+                    <span
+                        class="px-4 py-1.5 bg-emerald-50 text-emerald-600 rounded-full text-sm font-semibold border border-emerald-100">weather</span>
+                    <span
+                        class="px-4 py-1.5 bg-emerald-50 text-emerald-600 rounded-full text-sm font-semibold border border-emerald-100">is</span>
+                    <span
+                        class="px-4 py-1.5 bg-amber-50 text-amber-600 rounded-full text-sm font-semibold border border-amber-100">beautiful</span>
+                    <span
+                        class="px-4 py-1.5 bg-emerald-50 text-emerald-600 rounded-full text-sm font-semibold border border-emerald-100">today</span>
+                </div>
+            </div>
+        </section>
+        <!-- Features Section -->
+        <section class="max-w-7xl mx-auto px-6 mb-40 text-center">
+            <h2 class="text-[48px] font-bold text-[#1A1A1A] mb-4">Built for every learner</h2>
+            <p class="text-gray-500 text-[20px] mb-20">Whether you're a beginner or polishing an accent.</p>
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="feature-card text-left">
+                    <div class="w-14 h-14 bg-gray-100 rounded-2xl flex items-center justify-center mb-8">
+                        <span class="material-symbols-outlined text-[#4A4A4A] text-2xl"
+                            style="font-variation-settings: 'FILL' 1;">school</span>
+                    </div>
+                    <h3 class="text-2xl font-bold text-[#1A1A1A] mb-4 leading-tight">English Language Learners</h3>
+                    <p class="text-gray-500 mb-8 leading-relaxed">Build confidence and fluency in English with
+                        AI-powered practice sessions tailored to your native language background.</p>
+                    <ul class="space-y-4">
+                        <li class="flex items-center gap-3 text-gray-600 font-medium">
+                            <span class="material-symbols-outlined text-gray-400 text-[18px]">check</span>
+                            Native-language interference detection
+                        </li>
+                        <li class="flex items-center gap-3 text-gray-600 font-medium">
+                            <span class="material-symbols-outlined text-gray-400 text-[18px]">check</span>
+                            Accent reduction programs
+                        </li>
+                        <li class="flex items-center gap-3 text-gray-600 font-medium">
+                            <span class="material-symbols-outlined text-gray-400 text-[18px]">check</span>
+                            IELTS &amp; TOEFL prep modes
+                        </li>
+                    </ul>
+                </div>
+                <div class="feature-card text-left">
+                    <div class="w-14 h-14 bg-gray-100 rounded-2xl flex items-center justify-center mb-8">
+                        <span class="material-symbols-outlined text-[#4A4A4A] text-2xl"
+                            style="font-variation-settings: 'FILL' 1;">volume_up</span>
+                    </div>
+                    <h3 class="text-2xl font-bold text-[#1A1A1A] mb-4 leading-tight">Non-Native English Speakers</h3>
+                    <p class="text-gray-500 mb-8 leading-relaxed">Already speak English but want to sound more natural?
+                        Perfect your accent and prosody with targeted exercises.</p>
+                    <ul class="space-y-4">
+                        <li class="flex items-center gap-3 text-gray-600 font-medium">
+                            <span class="material-symbols-outlined text-gray-400 text-[18px]">check</span>
+                            Business English focus
+                        </li>
+                        <li class="flex items-center gap-3 text-gray-600 font-medium">
+                            <span class="material-symbols-outlined text-gray-400 text-[18px]">check</span>
+                            Regional accent coaching
+                        </li>
+                        <li class="flex items-center gap-3 text-gray-600 font-medium">
+                            <span class="material-symbols-outlined text-gray-400 text-[18px]">check</span>
+                            Real-time correction
+                        </li>
+                    </ul>
+                </div>
+                <div class="feature-card text-left">
+                    <div class="w-14 h-14 bg-gray-100 rounded-2xl flex items-center justify-center mb-8">
+                        <span class="material-symbols-outlined text-[#4A4A4A] text-2xl"
+                            style="font-variation-settings: 'FILL' 1;">groups</span>
+                    </div>
+                    <h3 class="text-2xl font-bold text-[#1A1A1A] mb-4 leading-tight">Any Language Learner</h3>
+                    <p class="text-gray-500 mb-8 leading-relaxed">Learning Spanish, French, Mandarin, or any other
+                        language? Clone a native speaker's voice profile and train with it.</p>
+                    <ul class="space-y-4">
+                        <li class="flex items-center gap-3 text-gray-600 font-medium">
+                            <span class="material-symbols-outlined text-gray-400 text-[18px]">check</span>
+                            40+ supported languages
+                        </li>
+                        <li class="flex items-center gap-3 text-gray-600 font-medium">
+                            <span class="material-symbols-outlined text-gray-400 text-[18px]">check</span>
+                            Native speaker voice cloning
+                        </li>
+                        <li class="flex items-center gap-3 text-gray-600 font-medium">
+                            <span class="material-symbols-outlined text-gray-400 text-[18px]">check</span>
+                            Cultural context coaching
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+        <!-- Bento Section -->
+        <section class="max-w-7xl mx-auto px-6 mb-40 text-center">
+            <h2 class="text-[52px] font-bold text-[#1A1A1A] mb-4">Everything you need to speak with confidence</h2>
+            <p class="text-gray-500 text-[20px] mb-20">A complete language learning stack powered by voice AI.</p>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="bento-card text-left">
+                    <div class="w-10 h-10 bg-gray-50 rounded-xl flex items-center justify-center mb-6">
+                        <span class="material-symbols-outlined text-gray-600 text-[22px]">mic</span>
+                    </div>
+                    <h4 class="text-[22px] font-bold text-[#1A1A1A] mb-3">Voice Cloning</h4>
+                    <p class="text-gray-500 leading-relaxed">Train the AI on your voice and hear how you should sound —
+                        with perfect pronunciation.</p>
+                </div>
+                <div class="bento-card text-left">
+                    <div class="w-10 h-10 bg-gray-50 rounded-xl flex items-center justify-center mb-6">
+                        <span class="material-symbols-outlined text-gray-600 text-[22px]">bar_chart</span>
+                    </div>
+                    <h4 class="text-[22px] font-bold text-[#1A1A1A] mb-3">Pronunciation Scoring</h4>
+                    <p class="text-gray-500 leading-relaxed">Real-time word-by-word feedback with phoneme-level accuracy
+                        scores.</p>
+                </div>
+                <div class="bento-card text-left">
+                    <div class="w-10 h-10 bg-gray-50 rounded-xl flex items-center justify-center mb-6">
+                        <span class="material-symbols-outlined text-gray-600 text-[22px]">psychology</span>
+                    </div>
+                    <h4 class="text-[22px] font-bold text-[#1A1A1A] mb-3">Adaptive Prosody</h4>
+                    <p class="text-gray-500 leading-relaxed">Fine-tune intonation, rhythm, and pacing to match any
+                        accent or speaking style.</p>
+                </div>
+                <div class="bento-card text-left">
+                    <div class="w-10 h-10 bg-gray-50 rounded-xl flex items-center justify-center mb-6">
+                        <span class="material-symbols-outlined text-gray-600 text-[22px]">forum</span>
+                    </div>
+                    <h4 class="text-[22px] font-bold text-[#1A1A1A] mb-3">Conversation Modes</h4>
+                    <p class="text-gray-500 leading-relaxed">Practice casual chat, job interviews, presentations, and
+                        academic discussions.</p>
+                </div>
+                <div class="bento-card text-left">
+                    <div class="w-10 h-10 bg-gray-50 rounded-xl flex items-center justify-center mb-6">
+                        <span class="material-symbols-outlined text-gray-600 text-[22px]">auto_awesome</span>
+                    </div>
+                    <h4 class="text-[22px] font-bold text-[#1A1A1A] mb-3">Personalized Learning</h4>
+                    <p class="text-gray-500 leading-relaxed">Adaptive curriculum that evolves with your progress and
+                        speaking goals.</p>
+                </div>
+                <div class="bento-card text-left">
+                    <div class="w-10 h-10 bg-gray-50 rounded-xl flex items-center justify-center mb-6">
+                        <span class="material-symbols-outlined text-gray-600 text-[22px]">public</span>
+                    </div>
+                    <h4 class="text-[22px] font-bold text-[#1A1A1A] mb-3">Multi-Language</h4>
+                    <p class="text-gray-500 leading-relaxed">Support for 40+ languages with native-speaker reference
+                        models.</p>
+                </div>
+            </div>
+        </section>
+        <!-- Footer -->
+        <footer class="bg-white border-t border-gray-100 pt-24 pb-12">
+            <div class="max-w-7xl mx-auto px-6">
+                <div class="grid md:grid-cols-4 gap-12 mb-20">
+                    <div class="col-span-1">
+                        <div class="flex items-center gap-2 mb-6">
+                            <div class="w-8 h-8 bg-[#4A4A4A] rounded-full flex items-center justify-center">
+                                <span class="material-symbols-outlined text-white text-base"
+                                    style="font-variation-settings: 'FILL' 1;">mic</span>
+                            </div>
+                            <span class="text-lg font-bold tracking-tight text-[#1A1A1A]">Voicely</span>
+                        </div>
+                        <p class="text-gray-400 text-[15px] leading-relaxed">The future of language learning is sonic.
+                            Perfectly simulated, personally delivered.</p>
+                    </div>
+                    <div>
+                        <h5 class="font-bold text-[#1A1A1A] mb-6">Product</h5>
+                        <ul class="space-y-4">
+                            <li><a class="text-gray-500 hover:text-[#4A4A4A] transition-colors text-[15px]"
+                                    href="#">Features</a></li>
+                            <li><a class="text-gray-500 hover:text-[#4A4A4A] transition-colors text-[15px]" href="#">Who
+                                    It's For</a></li>
+                            <li><a class="text-gray-500 hover:text-[#4A4A4A] transition-colors text-[15px]"
+                                    href="#">Pricing</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h5 class="font-bold text-[#1A1A1A] mb-6">Legal</h5>
+                        <ul class="space-y-4">
+                            <li><a class="text-gray-500 hover:text-[#4A4A4A] transition-colors text-[15px]"
+                                    href="#">Privacy</a></li>
+                            <li><a class="text-gray-500 hover:text-[#4A4A4A] transition-colors text-[15px]"
+                                    href="#">Terms</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h5 class="font-bold text-[#1A1A1A] mb-6">Connect</h5>
+                        <div class="flex gap-4">
+                            <a class="w-10 h-10 rounded-full border border-gray-200 flex items-center justify-center text-gray-500 hover:bg-gray-50 transition-all"
+                                href="#">
+                                <span class="material-symbols-outlined text-[20px]">share</span>
+                            </a>
+                            <a class="w-10 h-10 rounded-full border border-gray-200 flex items-center justify-center text-gray-500 hover:bg-gray-50 transition-all"
+                                href="#">
+                                <span class="material-symbols-outlined text-[20px]">alternate_email</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex flex-col md:flex-row justify-between items-center gap-6 pt-12 border-t border-gray-50">
+                    <span class="text-gray-400 text-sm">© 2024 Voicely. All rights reserved.</span>
+                    <div class="flex items-center gap-2">
+                        <span class="w-2 h-2 bg-emerald-500 rounded-full"></span>
+                        <span class="text-emerald-500 font-bold text-xs uppercase tracking-wider">System
+                            Operational</span>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </main>
+</body>
+
+</html>

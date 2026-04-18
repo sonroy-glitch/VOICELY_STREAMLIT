@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Voicely — Chat Details</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+    <style>
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background: #F9F9F9; overflow-y: auto !important; min-height: 100vh; margin: 0; }
+        .msg-user { background: linear-gradient(135deg,#4A4A4A,#6B6B6B); color: #fff; }
+        .msg-ai { background: rgba(74,74,74,0.07); color: #1A1A1A; }
+    </style>
+</head>
+<body>
+    <div class="max-w-4xl mx-auto p-6 flex flex-col h-screen">
+        <header class="flex items-center justify-between pb-4 border-b border-gray-200 mb-6">
+            <div class="flex items-center gap-3">
+                <button onclick="sendDataToStreamlit({action: 'go_dashboard'})" class="p-2 bg-white border border-gray-200 rounded-xl hover:bg-gray-50 flex items-center shadow-sm transition">
+                    <span class="material-symbols-outlined text-gray-600">arrow_back</span>
+                </button>
+                <h1 class="text-xl font-bold text-gray-800">Detailed Chat</h1>
+            </div>
+            <div>
+                <span class="px-3 py-1 bg-green-100 text-green-700 font-semibold text-[13px] rounded-full border border-green-200">Completed</span>
+            </div>
+        </header>
+
+        <div id="chat-container" class="flex-1 w-full bg-white rounded-2xl border border-gray-200 shadow-sm p-6 overflow-y-auto space-y-6">
+            <!-- Messages go here -->
+        </div>
+    </div>
+    
+    <script src="./streamlit-component-lib.js"></script>
+    <script>
+        window.renderDetailedChat = function(chatData) {
+            const container = document.getElementById("chat-container");
+            container.innerHTML = "";
+            let parsed = chatData;
+            try {
+                if(typeof parsed === "string") parsed = JSON.parse(parsed);
+            } catch(e) {}
+            
+            if (!Array.isArray(parsed) && parsed !== null && typeof parsed === "object") {
+                // fall back format
+                parsed = [
+                    {role: "user", content: parsed.user || "No User message"},
+                    {role: "assistant", content: parsed.assistant || "No AI response"}
+                ];
+            } else if (!Array.isArray(parsed)) {
+                parsed = [];
+            }
+            if (parsed.length === 0) {
+                 container.innerHTML = "<div class='flex flex-col items-center justify-center h-full space-y-3'><span class='material-symbols-outlined text-gray-300 text-5xl'>speaker_notes_off</span><p class='text-gray-500 font-medium'>No valid messages to display.</p></div>";
+                 return;
+            }
+            
+            parsed.forEach(msg => {
+                const isUser = msg.role === "user";
+                const row = document.createElement("div");
+                row.className = `flex ${isUser ? "justify-end" : "justify-start"} animate-[fade-up_0.3s_ease-out]`;
+                
+                let avatarHTML = "";
+                if (!isUser) {
+                    avatarHTML = `<div class="w-9 h-9 rounded-full flex items-center justify-center flex-shrink-0 mr-3 shadow-sm" style="background:#4A4A4A;"><span class="material-symbols-outlined text-white text-[18px]">smart_toy</span></div>`;
+                }
+                
+                row.innerHTML = `
+                    <div class="flex items-end max-w-[85%] ${isUser ? "flex-row-reverse" : ""}">
+                        ${avatarHTML}
+                        <div class="px-5 py-3.5 rounded-[20px] text-[15px] leading-relaxed shadow-sm ${isUser ? "msg-user rounded-br-[4px]" : "msg-ai rounded-bl-[4px]"}" style="${isUser ? "margin-left: 12px;" : "margin-right: 12px;"}">
+                            ${msg.content.replace(/\\n/g, "<br/>")}
+                        </div>
+                    </div>
+                `;
+                container.appendChild(row);
+            });
+            setTimeout(() => { if (typeof Streamlit !== "undefined" && Streamlit.setFrameHeight) Streamlit.setFrameHeight(); }, 200);
+        };
+    </script>
+</body>
+</html>

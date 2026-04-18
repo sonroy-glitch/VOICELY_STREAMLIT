@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html class="scroll-smooth" lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Voicely — Sign In</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+    <script id="tailwind-config">
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#404040",
+                        "secondary": "#4F4F4F",
+                        "accent": "#4F4F4F",
+                        "surface": "#FFFFFF",
+                        "background": "#F9F9F9"
+                    },
+                    fontFamily: {
+                        "body": ["Plus Jakarta Sans", "sans-serif"],
+                    },
+                },
+            },
+        }
+    </script>
+    <style>
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        html, body { overflow-y: auto !important; height: 100vh !important; min-height: 100vh !important; }
+        
+        .shadow-login {
+            box-shadow: 0 4px 60px -15px rgba(0,0,0,0.05);
+        }
+        
+        .input-field {
+            width: 100%;
+            padding: 12px 16px;
+            border-radius: 12px;
+            border: 1px solid #E5E5E5;
+            background: #F9F9F9;
+            transition: all 0.2s;
+            font-size: 15px;
+        }
+
+        .input-field:focus {
+            outline: none;
+            border-color: #4A4A4A;
+            background: #FFFFFF;
+            box-shadow: 0 0 0 4px rgba(74, 74, 74, 0.1);
+        }
+        
+        .btn-brand {
+            background: linear-gradient(135deg, #4A4A4A, #6B6B6B);
+            box-shadow: 0 4px 14px rgba(74, 74, 74, 0.18);
+            transition: all 0.2s;
+        }
+        
+        .btn-brand:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+        }
+    </style>
+    <script src="./streamlit-component-lib.js"></script>
+</head>
+<body class="bg-[#F9F9F9] font-body text-[#1A1A1A] antialiased flex flex-col min-h-screen">
+
+    <!-- Navigation (Minimal) -->
+    <nav class="absolute top-0 w-full z-50 bg-transparent">
+        <div class="max-w-7xl mx-auto px-6 h-20 flex justify-between items-center">
+            <div class="flex items-center gap-2 cursor-pointer" onclick="sendDataToStreamlit({action: 'go_index'});">
+                <div class="w-10 h-10 bg-[#4A4A4A] rounded-full flex items-center justify-center">
+                    <span class="material-symbols-outlined text-white text-xl" style="font-variation-settings: 'FILL' 1;">mic</span>
+                </div>
+                <span class="text-xl font-bold tracking-tight text-[#1A1A1A]">Voicely</span>
+            </div>
+            <a href="#" onclick="sendDataToStreamlit({action: 'go_index'}); return false;" class="text-[14px] font-semibold text-gray-500 hover:text-gray-900 flex items-center gap-1 transition-colors">
+                <span class="material-symbols-outlined text-[18px]">arrow_back</span> Back
+            </a>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="flex-1 flex flex-col justify-center items-center px-4 py-20">
+        
+        <div class="w-full max-w-md bg-white rounded-[32px] p-8 sm:p-10 shadow-login border border-gray-100 relative overflow-hidden">
+            <!-- Decorative background element -->
+            <div class="absolute -top-24 -right-24 w-48 h-48 bg-gray-50 rounded-full blur-3xl opacity-50 z-0"></div>
+            
+            <div class="relative z-10">
+                <div class="text-center mb-10">
+                    <h1 class="text-3xl font-bold text-[#1A1A1A] mb-2">Welcome Back</h1>
+                    <p class="text-gray-500 text-[15px]">Sign in to continue to your dashboard.</p>
+                </div>
+
+                <form onsubmit="handleLogin(event)" class="space-y-5">
+                    <div>
+                        <label class="block text-[13px] font-bold text-gray-700 mb-1.5 ml-1">Email address</label>
+                        <input type="email" id="email" required class="input-field" placeholder="you@example.com" />
+                    </div>
+                    
+                    <div>
+                        <div class="flex justify-between items-center mb-1.5 ml-1 mr-1">
+                            <label class="block text-[13px] font-bold text-gray-700">Password</label>
+                        </div>
+                        <input type="password" id="password" required class="input-field" placeholder="••••••••" />
+                    </div>
+
+                    <div class="pt-4">
+                        <button type="submit" class="w-full btn-brand text-white py-3.5 rounded-xl font-bold text-[15px] flex justify-center items-center gap-2">
+                            Sign In <span class="material-symbols-outlined text-[18px]">login</span>
+                        </button>
+                    </div>
+                </form>
+
+                <div class="mt-8 text-center">
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <script>
+        async function handleLogin(e) {
+            e.preventDefault();
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            // Simulated authentication step
+            const btn = e.target.querySelector('button[type="submit"]');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<span class="material-symbols-outlined animate-spin text-[18px]">sync</span> Authenticating...';
+            btn.style.opacity = '0.8';
+            
+            try {
+                let res = await fetch("https://voicely-backend.vercel.app/signin", {
+                    method: "POST",
+                    headers: {"Content-Type": "application/json"},
+                    body: JSON.stringify({email, password})
+                });
+                let data = await res.json();
+                if (data.msg === "User generation success") {
+                    res = await fetch("https://voicely-backend.vercel.app/signin", {
+                        method: "POST",
+                        headers: {"Content-Type": "application/json"},
+                        body: JSON.stringify({email, password})
+                    });
+                    data = await res.json();
+                }
+                
+                if (data.msg && data.msg.includes("allowed to login")) {
+                    localStorage.setItem('user_details', JSON.stringify(data));
+                    sendDataToStreamlit({ action: 'login', user: data });
+                } else {
+                    alert("Login failed: " + data.msg);
+                    btn.innerHTML = originalText;
+                    btn.style.opacity = '1';
+                }
+            } catch (err) {
+                alert("Connection failed");
+                btn.innerHTML = originalText;
+                btn.style.opacity = '1';
+            }
+        }
+    </script>
+</body>
+</html>

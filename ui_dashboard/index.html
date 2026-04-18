@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html class="scroll-smooth" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Voicely — Dashboard</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+        rel="stylesheet" />
+    <link rel="stylesheet" href="style.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#404040",
+                        "secondary": "#4F4F4F",
+                        "accent": "#4F4F4F",
+                        "surface": "#FFFFFF",
+                        "background": "#F9F9F9"
+                    },
+                    fontFamily: {
+                        "headline": ["Plus Jakarta Sans", "sans-serif"],
+                        "body": ["Plus Jakarta Sans", "sans-serif"],
+                    },
+                },
+            },
+        }
+    </script>
+<style>html, body { overflow-y: auto !important; height: 100vh !important; min-height: 100vh !important; }</style>\n</head>
+
+<body class="bg-[#F9F9F9] font-body antialiased">
+    <div class="flex min-h-screen">
+
+        <!-- ====== SIDEBAR ====== -->
+        <aside id="sidebar" class="sidebar expanded shadow-card fixed md:static z-50 h-full -translate-x-full md:translate-x-0 transition-transform duration-300">
+            <!-- Logo -->
+            <div class="h-16 flex items-center px-4 border-b" style="border-color:var(--border);">
+                <div class="w-8 h-8 gradient-brand rounded-lg flex items-center justify-center flex-shrink-0">
+                    <span class="material-symbols-outlined text-white text-base"
+                        style="font-variation-settings:'FILL' 1;">mic</span>
+                </div>
+                <span class="ml-2.5 font-bold text-lg nav-label">Voicely</span>
+            </div>
+
+            <!-- Nav -->
+            <nav class="flex-1 py-4 px-2 space-y-1" id="sidebar-nav">
+                <button class="nav-btn active" data-section="dashboard">
+                    <span class="material-symbols-outlined">dashboard</span>
+                    <span class="nav-label">Dashboard</span>
+                </button>
+                <button class="nav-btn" data-section="conversations">
+                    <span class="material-symbols-outlined">forum</span>
+                    <span class="nav-label">Conversations</span>
+                </button>
+                <button class="nav-btn" data-section="voicelab">
+                    <span class="material-symbols-outlined">tune</span>
+                    <span class="nav-label">Voice Lab</span>
+                </button>
+                <button class="nav-btn" data-section="scoring">
+                    <span class="material-symbols-outlined">military_tech</span>
+                    <span class="nav-label">Pronunciation</span>
+                </button>
+            </nav>
+
+            <!-- Sidebar Footer Navigation -->
+            <div class="p-3 border-t space-y-1" style="border-color:var(--border);">
+                <button id="btn-signout" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-semibold transition-all hover:bg-gray-50" style="color:var(--score-red);">
+                    <span class="material-symbols-outlined text-base">logout</span>
+                    <span class="nav-label">Sign Out</span>
+                </button>
+                <button id="sidebar-toggle" class="w-full flex items-center justify-center px-3 py-2 rounded-xl text-sm transition-all hover:bg-gray-50"
+                    style="color:var(--muted-foreground);">
+                    <span class="material-symbols-outlined text-base" id="collapse-icon">chevron_left</span>
+                </button>
+            </div>
+        </aside>
+
+        <!-- ====== MAIN ====== -->
+        <main class="flex-1 overflow-y-auto w-full">
+            <!-- Top bar -->
+            <header class="h-16 bg-white border-b flex items-center px-4 md:px-6 sticky top-0 z-10 shadow-card"
+                style="border-color:var(--border);">
+                <button id="mobile-menu-btn" class="md:hidden mr-3 p-2 rounded-lg hover:bg-gray-100 flex items-center justify-center text-gray-500">
+                    <span class="material-symbols-outlined">menu</span>
+                </button>
+                <div>
+                    <h2 class="font-bold text-[#1A1A1A] capitalize" id="header-title">Dashboard</h2>
+                    <p class="text-xs" style="color:var(--muted-foreground);" id="header-date"></p>
+                </div>
+                <div class="ml-auto flex items-center gap-3">
+                    <div class="flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium border"
+                        style="background:rgba(34,197,94,0.1);color:var(--score-green);border-color:rgba(34,197,94,0.2);">
+                        <div class="w-1.5 h-1.5 rounded-full animate-pulse" style="background:var(--score-green);">
+                        </div>
+                        Voice Ready
+                    </div>
+                    <div
+                        class="w-9 h-9 gradient-brand rounded-full flex items-center justify-center text-white font-bold text-sm">
+                        A
+                    </div>
+                </div>
+            </header>
+
+            <div class="p-6">
+                <!-- ============================================================ -->
+                <!-- SECTION: DASHBOARD (TextVoiceModule + PronunciationScoring)  -->
+                <!-- ============================================================ -->
+                <div id="section-dashboard" class="section-panel active space-y-8">
+
+                    <!-- ---- Text & Voice Module ---- -->
+                    <div class="space-y-6 animate-fade-up">
+                        <!-- Header card -->
+                        <div class="bg-white rounded-2xl border p-6 shadow-card" style="border-color:var(--border);">
+                            <div class="flex items-center gap-3">
+                                <div class="w-9 h-9 rounded-xl flex items-center justify-center"
+                                    style="background:var(--accent);">
+                                    <span class="material-symbols-outlined text-base"
+                                        style="color:var(--primary);">volume_up</span>
+                                </div>
+                                <div>
+                                    <h2 class="font-bold text-lg">Type & Hear Your Voice</h2>
+                                    <p class="text-xs" style="color:var(--muted-foreground);">Powered by your personal
+                                        voice clone</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 gap-6">
+                            <!-- Text Input Panel -->
+                            <div class="bg-white rounded-2xl border p-6 shadow-card space-y-4"
+                                style="border-color:var(--border);">
+                                <!-- Language selector -->
+                                <div class="flex items-center gap-3">
+                                    <label class="text-sm font-medium whitespace-nowrap"
+                                        style="color:var(--muted-foreground);">Language</label>
+                                    <div class="relative flex-1 max-w-[208px]">
+                                        <select id="voice-language"
+                                            class="w-full appearance-none text-sm px-3 py-2 pr-8 rounded-lg border focus:outline-none focus:ring-2"
+                                            style="background:var(--muted);color:var(--foreground);border-color:var(--border);--tw-ring-color:var(--ring);">
+                                            <option>English (US)</option>
+                                            <option>English (UK)</option>
+                                            <option>Spanish</option>
+                                            <option>French</option>
+                                            <option>German</option>
+                                            <option>Italian</option>
+                                            <option>Portuguese</option>
+                                            <option>Mandarin</option>
+                                            <option>Japanese</option>
+                                            <option>Korean</option>
+                                        </select>
+                                        <span
+                                            class="material-symbols-outlined absolute right-2 top-1/2 -translate-y-1/2 text-base pointer-events-none"
+                                            style="color:var(--muted-foreground);">expand_more</span>
+                                    </div>
+                                </div>
+                                <!-- Textarea -->
+                                <textarea id="voice-text"
+                                    class="w-full h-32 rounded-xl px-4 py-3 text-sm resize-none border focus:outline-none focus:ring-2"
+                                    style="background:rgba(243,244,246,0.4);border-color:var(--border);--tw-ring-color:var(--ring);"
+                                    placeholder="Type or paste the text you want to practice...">The quick brown fox jumps over the lazy dog.</textarea>
+                                <!-- Generate button -->
+                                <button id="btn-generate"
+                                    class="flex items-center gap-2 px-6 py-3 gradient-brand text-white rounded-xl font-semibold text-sm shadow-primary hover:opacity-90 transition-all">
+                                    <span class="material-symbols-outlined text-base">bolt</span>
+                                    Generate My Voice
+                                </button>
+                                <!-- Waveform + controls (hidden by default) -->
+                                <div id="voice-result" class="space-y-3 hidden animate-scale-in">
+                                    <div id="waveform-container"
+                                        class="flex items-center justify-center gap-1 h-10 px-4 rounded-xl"
+                                        style="background:var(--accent);"></div>
+                                    <div class="flex items-center gap-3">
+                                        <div class="ml-auto flex items-center gap-2">
+                                            <span class="text-xs" style="color:var(--muted-foreground);">Score</span>
+                                            <span class="text-2xl font-bold" style="color:var(--primary);">87</span>
+                                            <span class="text-xs" style="color:var(--muted-foreground);">/100</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </div>
+
+
+                </div>
+
+                <!-- ============================================================ -->
+                <!-- SECTION: CONVERSATIONS                                       -->
+                <!-- ============================================================ -->
+                <div id="section-conversations" class="section-panel space-y-6">
+                    <!-- Header -->
+                    <div class="bg-white rounded-2xl border p-6 shadow-card" style="border-color:var(--border);">
+                        <div class="flex items-center justify-between flex-wrap gap-4">
+                            <div class="flex items-center gap-3">
+                                <div class="w-9 h-9 rounded-xl flex items-center justify-center"
+                                    style="background:var(--accent);">
+                                    <span class="material-symbols-outlined text-base"
+                                        style="color:var(--primary);">forum</span>
+                                </div>
+                                <div>
+                                    <h2 class="font-bold text-lg">Conversation Simulator</h2>
+                                    <p class="text-xs" style="color:var(--muted-foreground);">Practice real
+                                        conversations with your AI language partner</p>
+                                </div>
+                            </div>
+                            <div class="flex rounded-xl p-1" style="background:var(--muted);" id="conv-tabs">
+                                <button
+                                    class="px-4 py-2 rounded-lg text-sm font-medium transition-all bg-white shadow-card"
+                                    data-conv-tab="simulator">Simulator</button>
+                                <button class="px-4 py-2 rounded-lg text-sm font-medium transition-all"
+                                    style="color:var(--muted-foreground);" data-conv-tab="history">Past
+                                    Conversations</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Simulator View -->
+                    <div id="conv-simulator" class="animate-fade-up">
+                        <!-- Mode selector -->
+                        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 mb-6" id="mode-selector">
+                            <button
+                                class="card-lift flex flex-col items-center gap-2 p-4 rounded-2xl border text-center transition-all border-[var(--primary)] shadow-primary"
+                                style="background:var(--accent);" data-mode="casual">
+                                <div class="w-10 h-10 rounded-xl bg-score-green flex items-center justify-center">
+                                    <span class="material-symbols-outlined text-white">local_cafe</span>
+                                </div>
+                                <span class="text-xs font-semibold leading-tight" style="color:var(--primary);">Casual
+                                    Chat</span>
+                            </button>
+                            <button
+                                class="card-lift flex flex-col items-center gap-2 p-4 rounded-2xl border text-center transition-all bg-white shadow-card"
+                                style="border-color:var(--border);" data-mode="academic">
+                                <div class="w-10 h-10 rounded-xl flex items-center justify-center"
+                                    style="background:var(--primary);">
+                                    <span class="material-symbols-outlined text-white">menu_book</span>
+                                </div>
+                                <span class="text-xs font-semibold leading-tight">Academic Lecture</span>
+                            </button>
+                            <button
+                                class="card-lift flex flex-col items-center gap-2 p-4 rounded-2xl border text-center transition-all bg-white shadow-card"
+                                style="border-color:var(--border);" data-mode="business">
+                                <div class="w-10 h-10 rounded-xl flex items-center justify-center"
+                                    style="background:var(--secondary);">
+                                    <span class="material-symbols-outlined text-white">business_center</span>
+                                </div>
+                                <span class="text-xs font-semibold leading-tight">Business Meeting</span>
+                            </button>
+                            <button
+                                class="card-lift flex flex-col items-center gap-2 p-4 rounded-2xl border text-center transition-all bg-white shadow-card"
+                                style="border-color:var(--border);" data-mode="interview">
+                                <div class="w-10 h-10 rounded-xl bg-score-yellow flex items-center justify-center">
+                                    <span class="material-symbols-outlined text-white">mic</span>
+                                </div>
+                                <span class="text-xs font-semibold leading-tight">Job Interview</span>
+                            </button>
+                            <button
+                                class="card-lift flex flex-col items-center gap-2 p-4 rounded-2xl border text-center transition-all bg-white shadow-card"
+                                style="border-color:var(--border);" data-mode="presentation">
+                                <div class="w-10 h-10 rounded-xl bg-score-red flex items-center justify-center">
+                                    <span class="material-symbols-outlined text-white">monitor</span>
+                                </div>
+                                <span class="text-xs font-semibold leading-tight">Presentation</span>
+                            </button>
+                        </div>
+
+                        <div class="grid grid-cols-1 xl:grid-cols-3 gap-6">
+                            <!-- Conversation panel -->
+                            <div class="xl:col-span-2 bg-white rounded-2xl border shadow-card overflow-hidden"
+                                style="border-color:var(--border);">
+                                <!-- Mode header -->
+                                <div class="gradient-brand px-6 py-4">
+                                    <div class="flex items-center justify-between">
+                                        <div class="flex items-center gap-3">
+                                            <div class="w-10 h-10 rounded-full flex items-center justify-center"
+                                                style="background:rgba(255,255,255,0.2);">
+                                                <span class="material-symbols-outlined text-white">mic</span>
+                                            </div>
+                                            <div>
+                                                <p class="font-bold text-white text-sm" id="conv-mode-label">Casual Chat
+                                                </p>
+                                                <p class="text-white/70 text-xs" id="conv-mode-desc">Relaxed, everyday
+                                                    conversation practice</p>
+                                            </div>
+                                        </div>
+                                        <span id="conv-status-badge"
+                                            class="px-2.5 py-1 rounded-full text-xs font-medium"
+                                            style="background:rgba(107,114,128,0.5);color:#fff;">Idle</span>
+                                    </div>
+                                </div>
+                                <!-- Messages -->
+                                <div class="p-6 space-y-4 min-h-[256px]" id="conv-messages"></div>
+                                <!-- Input bar -->
+                                <div class="px-6 pb-6 pt-2">
+                                    <div class="flex items-center gap-3">
+                                        <input
+                                            class="flex-1 px-4 py-2.5 rounded-xl text-sm border focus:outline-none placeholder:opacity-60 transition"
+                                            style="background:var(--muted);border-color:var(--border);"
+                                            placeholder="Your transcribed speech will appear here…" readonly />
+                                        <button id="btn-start-conv"
+                                            class="flex items-center gap-2 px-5 py-2.5 gradient-brand text-white rounded-xl text-sm font-semibold shadow-primary hover:opacity-90 active:scale-95 transition">
+                                            <span class="material-symbols-outlined text-base">mic</span>
+                                            <span id="conv-btn-label">Start Conversation</span>
+                                        </button>
+                                    </div>
+                                    <p class="text-xs mt-2" style="color:var(--muted-foreground);">Powered by Resemble-AI ·
+                                        Groq llama-3.3-70b · ElevenLabs</p>
+                                </div>
+                            </div>
+
+                            <!-- Settings panel -->
+                            <div class="bg-white rounded-2xl border p-6 shadow-card space-y-5"
+                                style="border-color:var(--border);">
+                                <h3 class="font-semibold">Session Settings</h3>
+                                <div>
+                                    <label class="text-xs font-medium uppercase tracking-wide mb-2 block"
+                                        style="color:var(--muted-foreground);">Difficulty</label>
+                                    <div class="flex flex-col gap-2" id="difficulty-btns">
+                                        <button class="px-4 py-2.5 rounded-xl text-sm font-medium border transition-all"
+                                            style="background:var(--muted);border-color:var(--border);color:var(--muted-foreground);"
+                                            data-diff="Beginner">Beginner</button>
+                                        <button
+                                            class="px-4 py-2.5 rounded-xl text-sm font-medium border transition-all gradient-brand text-white shadow-primary"
+                                            style="border-color:transparent;"
+                                            data-diff="Intermediate">Intermediate</button>
+                                        <button class="px-4 py-2.5 rounded-xl text-sm font-medium border transition-all"
+                                            style="background:var(--muted);border-color:var(--border);color:var(--muted-foreground);"
+                                            data-diff="Advanced">Advanced</button>
+                                    </div>
+                                </div>
+                                <div>
+                                    <label class="text-xs font-medium uppercase tracking-wide mb-2 block"
+                                        style="color:var(--muted-foreground);">AI Voice</label>
+                                    <div class="relative">
+                                        <select id="voice-select"
+                                            class="w-full appearance-none text-sm px-3 py-2.5 pr-8 rounded-xl border focus:outline-none focus:ring-2 font-medium"
+                                            style="background:var(--muted);color:var(--foreground);border-color:var(--border);--tw-ring-color:var(--ring);">
+                                            <option value="Bakari">Bakari — Male, Deep</option>
+                                            <option value="Harel">Harel — Male, Warm</option>
+                                            <option value="Mei">Mei — Female, Soft</option>
+                                            <option value="Hao">Hao — Male, Clear</option>
+                                            <option value="Defne">Defne — Female, Bright</option>
+                                        </select>
+                                        <span
+                                            class="material-symbols-outlined absolute right-2 top-1/2 -translate-y-1/2 text-base pointer-events-none"
+                                            style="color:var(--muted-foreground);">expand_more</span>
+                                    </div>
+                                </div>
+                                <div class="border-t pt-4 space-y-3" style="border-color:var(--border);">
+                                    <div class="flex items-center justify-between p-3 rounded-xl"
+                                        style="background:var(--accent);">
+                                        <span class="text-sm font-medium">Tone</span>
+                                        <span
+                                            class="text-xs font-semibold px-2 py-1 rounded-full gradient-brand text-white"
+                                            id="settings-tone">Casual</span>
+                                    </div>
+                                    <div class="flex items-center justify-between p-3 rounded-xl"
+                                        style="background:var(--accent);">
+                                        <span class="text-sm font-medium">Mode</span>
+                                        <span class="text-xs font-semibold" style="color:var(--primary);"
+                                            id="settings-mode">Casual Chat</span>
+                                    </div>
+                                    <div class="flex items-center justify-between p-3 rounded-xl"
+                                        style="background:var(--accent);">
+                                        <span class="text-sm font-medium">Level</span>
+                                        <span class="text-xs font-semibold" style="color:var(--secondary);"
+                                            id="settings-level">Intermediate</span>
+                                    </div>
+                                    <div class="flex items-center justify-between p-3 rounded-xl"
+                                        style="background:var(--accent);">
+                                        <span class="text-sm font-medium">Voice</span>
+                                        <span class="text-xs font-semibold" style="color:var(--primary);"
+                                            id="settings-voice">Bakari</span>
+                                    </div>
+                                </div>
+                                <button
+                                    class="w-full py-3 gradient-brand text-white rounded-xl font-semibold text-sm shadow-primary hover:opacity-90 transition-all">Start
+                                    Session</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- History View -->
+                    <div id="conv-history" class="hidden animate-fade-up">
+                        <div class="bg-white rounded-2xl border shadow-card overflow-hidden"
+                            style="border-color:var(--border);">
+                            <div class="divide-y" style="--tw-divide-opacity:1;border-color:var(--border);"
+                                id="history-list"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ============================================================ -->
+                <!-- SECTION: VOICE LAB (VoiceLab + AdaptiveProsody)             -->
+                <!-- ============================================================ -->
+                <div id="section-voicelab" class="section-panel space-y-8">
+
+                    <!-- ---- Voice Lab ---- -->
+                    <div class="space-y-6 animate-fade-up">
+                        <div class="bg-white rounded-2xl border p-6 shadow-card" style="border-color:var(--border);">
+                            <div class="flex items-center gap-3">
+                                <div class="w-9 h-9 rounded-xl flex items-center justify-center"
+                                    style="background:rgba(107,107,107,0.1);">
+                                    <span class="material-symbols-outlined text-base"
+                                        style="color:var(--secondary);">tune</span>
+                                </div>
+                                <div>
+                                    <h2 class="font-bold text-lg">Voice Lab</h2>
+                                    <p class="text-xs" style="color:var(--muted-foreground);">Customize and clone your
+                                        voice profile</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 max-w-2xl mx-auto gap-6">
+                            <!-- Voice Profile -->
+                            <div class="bg-white rounded-2xl border p-6 shadow-card space-y-5"
+                                style="border-color:var(--border);">
+                                <h3 class="font-semibold">Voice Profile</h3>
+                                <!-- Avatar -->
+                                <div class="flex items-center gap-4 p-4 rounded-xl" style="background:var(--accent);">
+                                    <div
+                                        class="w-14 h-14 gradient-brand rounded-full flex items-center justify-center flex-shrink-0">
+                                        <span class="material-symbols-outlined text-white text-2xl">mic</span>
+                                    </div>
+                                    <div class="flex-1 min-w-0">
+                                        <input id="voice-name" value="My Voice"
+                                            class="font-bold text-base bg-transparent border-0 border-b-2 focus:outline-none w-full pb-0.5"
+                                            style="border-color:rgba(74,74,74,0.3);color:var(--foreground);" />
+                                        <p class="text-xs mt-1" style="color:var(--muted-foreground);">American English
+                                            · 3 samples recorded</p>
+                                    </div>
+                                    <div class="flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold border"
+                                        style="background:rgba(34,197,94,0.1);color:var(--score-green);border-color:rgba(34,197,94,0.2);">
+                                        <span class="material-symbols-outlined text-xs">check</span> Ready
+                                    </div>
+                                </div>
+                                <!-- Actions -->
+                                <div class="grid grid-cols-2 gap-3">
+                                    <button id="btn-upload"
+                                        class="flex items-center justify-center gap-2 px-4 py-3 rounded-xl text-sm font-medium border transition-all"
+                                        style="background:var(--muted);border-color:var(--border);">
+                                        <span class="material-symbols-outlined text-base"
+                                            style="color:var(--muted-foreground);">upload</span> Upload Sample
+                                    </button>
+                                    <button id="btn-record"
+                                        class="flex items-center justify-center gap-2 px-4 py-3 rounded-xl text-sm font-medium gradient-brand text-white shadow-primary hover:opacity-90 transition-all border border-transparent">
+                                        <span class="material-symbols-outlined text-base">mic</span>
+                                        <span id="record-label">Record Sample</span>
+                                    </button>
+                                </div>
+                                <input type="file" id="upload-audio-input" accept="audio/*" style="display:none;" />
+                                <input type="file" id="upload-audio-input" accept="audio/*" style="display:none;" />
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ============================================================ -->
+                <!-- SECTION: SCORING (Moved from Dashboard)                      -->
+                <!-- ============================================================ -->
+                <div id="section-scoring" class="section-panel space-y-8">
+                    <!-- ---- Pronunciation Scoring ---- -->
+                    <div class="space-y-6 animate-fade-up">
+                        <div class="bg-white rounded-2xl border p-6 shadow-card" style="border-color:var(--border);">
+                            <div class="flex items-center gap-3">
+                                <div class="w-9 h-9 rounded-xl flex items-center justify-center"
+                                    style="background:rgba(244,63,94,0.1);">
+                                    <span class="material-symbols-outlined text-base"
+                                        style="color:var(--brand-rose);">bar_chart</span>
+                                </div>
+                                <div>
+                                    <h2 class="font-bold text-lg">Pronunciation Scoring</h2>
+                                    <p class="text-xs" style="color:var(--muted-foreground);">Track your progress and
+                                        identify areas to improve</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 gap-6">
+                            
+                            <!-- Paragraph Reader -->
+                            <div class="bg-white rounded-2xl border p-6 shadow-card flex flex-col space-y-4" style="border-color:var(--border);">
+                                <h3 class="font-semibold text-sm tracking-wide uppercase text-gray-500">Read This Aloud</h3>
+                                <p id="scoring-paragraph-text" class="text-sm leading-relaxed p-4 rounded-xl border italic" style="background:var(--accent); color:var(--foreground); border-color:var(--border);">
+                                    Generating paragraph...
+                                </p>
+                                <div class="flex flex-wrap items-center gap-3">
+                                    <button id="btn-score-mic" class="flex items-center justify-center gap-2 px-6 py-3 rounded-xl text-sm font-medium gradient-brand text-white shadow-primary hover:opacity-90 transition-all border border-transparent">
+                                        <span class="material-symbols-outlined text-base">mic</span>
+                                        <span id="score-mic-label">Start Reading</span>
+                                    </button>
+                                    <button id="btn-generate-paragraph" class="flex items-center justify-center gap-2 px-6 py-3 rounded-xl text-sm font-medium bg-white border shadow-card hover:bg-gray-50 transition-all" style="border-color:var(--border);color:var(--foreground);">
+                                        <span class="material-symbols-outlined text-base" id="icon-generate-paragraph">refresh</span>
+                                        <span>New HTML Paragraph</span>
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <!-- Circular Score -->
+                            <div class="bg-white rounded-2xl border p-6 shadow-card flex flex-col items-center max-w-md mx-auto w-full"
+                                style="border-color:var(--border);">
+                                <div class="flex flex-col items-center">
+                                    <svg width="160" height="160" viewBox="0 0 160 160"
+                                        style="transform:rotate(-90deg);">
+                                        <circle cx="80" cy="80" r="60" fill="none" stroke="#F3F4F6" stroke-width="12" />
+                                        <circle id="score-circle-path" cx="80" cy="80" r="60" fill="none" stroke="url(#scoreGradDash)"
+                                            stroke-width="12" stroke-dasharray="376.99" stroke-dashoffset="49.01"
+                                            stroke-linecap="round" style="transition:all 1s;" />
+                                        <defs>
+                                            <linearGradient id="scoreGradDash" x1="0%" y1="0%" x2="100%" y2="0%">
+                                                <stop offset="0%" stop-color="#4A4A4A" />
+                                                <stop offset="100%" stop-color="#6B6B6B" />
+                                            </linearGradient>
+                                        </defs>
+                                    </svg>
+                                    <div class="text-center" style="margin-top:-96px;">
+                                        <p id="score-overall" class="text-4xl font-bold text-gradient">87</p>
+                                        <p class="text-xs mt-1 font-medium" style="color:var(--muted-foreground);">
+                                            Overall Score</p>
+                                    </div>
+                                </div>
+
+                                <div class="w-full mt-6 space-y-4" style="margin-top:48px;">
+                                    <!-- Fluency -->
+                                    <div class="space-y-1.5">
+                                        <div class="flex justify-between items-center">
+                                            <span class="text-sm font-medium">Fluency</span>
+                                            <span id="txt-fluency" class="text-sm font-bold" style="color:var(--primary);">85%</span>
+                                        </div>
+                                        <div class="score-bar-track" style="background:rgba(74,74,74,0.12);">
+                                            <div id="bar-fluency" class="score-bar-fill"
+                                                style="width:85%;transition:width 1s;background:linear-gradient(to right,var(--brand-indigo),var(--brand-violet));">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Accuracy -->
+                                    <div class="space-y-1.5">
+                                        <div class="flex justify-between items-center">
+                                            <span class="text-sm font-medium">Accuracy</span>
+                                            <span id="txt-accuracy" class="text-sm font-bold" style="color:var(--primary);">91%</span>
+                                        </div>
+                                        <div class="score-bar-track" style="background:rgba(20,184,166,0.1);">
+                                            <div id="bar-accuracy" class="score-bar-fill"
+                                                style="width:91%;transition:width 1s;background:linear-gradient(to right,var(--brand-teal),var(--brand-sky));">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Intonation -->
+                                    <div class="space-y-1.5">
+                                        <div class="flex justify-between items-center">
+                                            <span class="text-sm font-medium">Intonation</span>
+                                            <span id="txt-intonation" class="text-sm font-bold" style="color:var(--primary);">78%</span>
+                                        </div>
+                                        <div class="score-bar-track" style="background:rgba(107,107,107,0.1);">
+                                            <div id="bar-intonation" class="score-bar-fill"
+                                                style="width:78%;transition:width 1s;background:linear-gradient(to right,var(--brand-violet),var(--brand-rose));">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Rhythm -->
+                                    <div class="space-y-1.5">
+                                        <div class="flex justify-between items-center">
+                                            <span class="text-sm font-medium">Rhythm</span>
+                                            <span id="txt-rhythm" class="text-sm font-bold" style="color:var(--primary);">82%</span>
+                                        </div>
+                                        <div class="score-bar-track" style="background:rgba(56,189,248,0.1);">
+                                            <div id="bar-rhythm" class="score-bar-fill"
+                                                style="width:82%;transition:width 1s;background:linear-gradient(to right,var(--brand-sky),var(--brand-indigo));">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        </main>
+    </div>
+    <script src="./streamlit-component-lib.js"></script>
+    <script src="script.js"></script>
+</body>
+
+</html>
