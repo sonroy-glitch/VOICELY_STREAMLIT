@@ -24,10 +24,11 @@ st.set_page_config(layout="wide", page_title="Voicely", page_icon="🎤", initia
 st.markdown("""
 <style>
     #MainMenu {visibility: hidden;}
-    header {visibility: hidden;}
+    header {visibility: hidden; background: #F9F9F9 !important;}
     footer {visibility: hidden;}
     [data-testid="stSidebar"] {display: none !important;}
     .block-container { padding: 0 !important; max-width: 100% !important; margin: 0 !important; }
+    .stApp { background-color: #F9F9F9 !important; }
     iframe { border: none; width: 100vw; height: 100vh !important; position: fixed; top: 0; left: 0; z-index: 99999; background: #F9F9F9;}
 </style>
 """, unsafe_allow_html=True)

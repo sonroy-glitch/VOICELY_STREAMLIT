@@ -28,9 +28,9 @@ function _simpleHash(str) {
 let _hasFetchedChats = false;
 
 // Global audio element to bypass autoplay restrictions on iOS/Safari/Chrome
-// We will interact with it on user clicks to 'unlock' it.
 const globalAudioPlayer = new Audio();
-globalAudioPlayer.autoplay = true;
+// A tiny, valid silent MP3 file to properly unlock the AudioContext
+const silentAudio = "data:audio/mpeg;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjU4Ljc2LjEwMAAAAAAAAAAAAAAA//OEAAAAAAAAAAAAAAAAAAAAAAAASW5mbwAAAA8AAAAEAAABIADAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDV1dXV1dXV1dXV1dXV1dXV1dXV1dXV1dXV6urq6urq6urq6urq6urq6urq6urq6urq6v////////////////////////////////8AAAAATGF2YzU4LjkxLjEwMAAAAAAAAAAAAAAAAEQAAAAALv/zZAAAABAAABkAAAAAADyAEKAAAAAAzMzMyv/zZAAASxAAQkAAAAAAzMzMyv/zZAAASxAAQkAAAAAAzMzMyv/zZAAASxAAQkAAAAAAzMzMw==";
 
 window.addEventListener("message", function(event) {
     if (event.data.type === "streamlit:render") {
@@ -161,15 +161,21 @@ window.addEventListener("load", function() {
     observer.observe(document.body, { childList: true, subtree: true });
     
     document.getElementById("btn-generate")?.addEventListener("click", () => {
-        // Unlock audio context on user interaction
-        globalAudioPlayer.play().catch(e => {});
+        // Unlock audio context on user interaction with silent audio
+        if (!globalAudioPlayer.src || globalAudioPlayer.src === window.location.href) {
+            globalAudioPlayer.src = silentAudio;
+            globalAudioPlayer.play().catch(e => {});
+        }
         const text = document.getElementById("voice-text")?.value;
         const lang = document.getElementById("voice-language")?.value;
         sendDataToStreamlit({ action: "generate_voice", request_id: Date.now().toString() + Math.random().toString(36).slice(2), text: text, lang: lang });
     });
     
     document.getElementById("btn-start-conv")?.addEventListener("click", () => {
-        // Unlock audio context on user interaction
-        globalAudioPlayer.play().catch(e => {});
+        // Unlock audio context on user interaction with silent audio
+        if (!globalAudioPlayer.src || globalAudioPlayer.src === window.location.href) {
+            globalAudioPlayer.src = silentAudio;
+            globalAudioPlayer.play().catch(e => {});
+        }
     });
 });
