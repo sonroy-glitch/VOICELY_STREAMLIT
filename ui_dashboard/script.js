@@ -313,6 +313,12 @@ document.addEventListener("DOMContentLoaded", () => {
     if (udStr) {
         try {
             const ud = JSON.parse(udStr);
+             if (ud && ud.email) {
+                const avatarEl = document.getElementById("user-avatar");
+                if (avatarEl) {
+                    avatarEl.textContent = ud.email.charAt(0).toUpperCase();
+                }
+            }
             if (ud && ud.id) {
                 fetch('https://voicely-backend.vercel.app/retrieve_chats', {
                     headers: { 'user_id': String(ud.id) }
