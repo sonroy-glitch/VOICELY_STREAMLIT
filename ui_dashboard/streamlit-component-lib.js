@@ -170,12 +170,12 @@ window.addEventListener("load", function() {
         try {
             const udStr = localStorage.getItem('user_details');
             if (!udStr) {
-                alert("Please log in again.");
+                if (window.showCustomAlert) window.showCustomAlert("Please log in again."); else alert("Please log in again.");
                 return;
             }
             const ud = JSON.parse(udStr);
             if (!ud.voice_id || ud.voice_id === "") {
-                alert("Please clone your voice first in the Voice Lab!");
+                if (window.showCustomAlert) window.showCustomAlert("Please clone your voice first in the Voice Lab!"); else alert("Please clone your voice first in the Voice Lab!");
                 return;
             }
         } catch(e) {}
