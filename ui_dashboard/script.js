@@ -386,6 +386,7 @@ document.addEventListener("DOMContentLoaded", () => {
                         request_id: Date.now().toString() + Math.random().toString(36).slice(2),
                         audio: base64data
                     });
+                    if (window.lockNavigation) window.lockNavigation();
                 };
                 btn.classList.remove("animate-pulse");
                 btn.classList.add("gradient-brand", "shadow-primary");
@@ -431,6 +432,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 audio: base64data,
                 filename: file.name
             });
+            if (window.lockNavigation) window.lockNavigation();
         };
         // Reset input so the same file can be re-selected
         e.target.value = "";
@@ -625,5 +627,35 @@ document.getElementById("custom-alert-backdrop")?.addEventListener("click", () =
         modal.classList.remove("flex");
     }
 });
+
+// ——————————————————————————————————————————————
+// Lock/Unlock Navigation for Cloning
+// ——————————————————————————————————————————————
+window.lockNavigation = function() {
+    window.isCloningLocked = true;
+    document.querySelectorAll(".nav-btn, #btn-signout, #sidebar-toggle, #mobile-menu-btn, #btn-record, #btn-upload").forEach(btn => {
+        btn.style.pointerEvents = "none";
+        btn.style.opacity = "0.5";
+    });
+    const label = document.getElementById("record-label");
+    if (label) label.textContent = "Cloning Voice...";
+    if (window.showCustomAlert) window.showCustomAlert("Please wait while we clone your voice. Do not navigate away from this page.");
+};
+
+window.unlockNavigation = function() {
+    if (!window.isCloningLocked) return;
+    window.isCloningLocked = false;
+    document.querySelectorAll(".nav-btn, #btn-signout, #sidebar-toggle, #mobile-menu-btn, #btn-record, #btn-upload").forEach(btn => {
+        btn.style.pointerEvents = "auto";
+        btn.style.opacity = "1";
+    });
+    const label = document.getElementById("record-label");
+    if (label) label.textContent = "Record Sample";
+    if (window.showCustomAlert) window.showCustomAlert("Voice cloned successfully! You can now use your custom voice.");
+    
+    // Also mark the ready status badge
+    const voiceNameInput = document.getElementById("voice-name");
+    if (voiceNameInput) voiceNameInput.value = "My Cloned Voice";
+};
 
 }); // Closes the window.addEventListener DOMContentLoaded
