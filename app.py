@@ -141,27 +141,28 @@ elif st.session_state.current_page == 'dashboard':
                 iso_lang = lang_map.get(lang, "en")
                 
                 user_data = st.session_state.get('user_data', {})
-                voice_id = user_data.get('voice_id') if user_data.get('voice_id') else 'dCtAsXo1CxxIQ7K1C8ee'
+                voice_id = user_data.get('voice_id')
                 
-                audio_iterator = client.text_to_speech.convert(
-                    voice_id=voice_id,
-                    model_id="eleven_multilingual_v2",
-                    text=text,
-                    language_code=iso_lang
-                )
-                
-                
-                audio_bytes = b"".join(list(audio_iterator)) if not isinstance(audio_iterator, bytes) else audio_iterator
-                
-                try:
-                    play(audio_bytes)
-                except Exception as e:
-                    print("Local Host Playback Failed. Pushing straight to frontend. Error:", e)
-                
-
-                audio_b64 = base64.b64encode(audio_bytes).decode()
-                st.session_state.component_args = {"audio_b64": audio_b64}
-                st.rerun()
+                if voice_id:
+                    audio_iterator = client.text_to_speech.convert(
+                        voice_id=voice_id,
+                        model_id="eleven_multilingual_v2",
+                        text=text,
+                        language_code=iso_lang
+                    )
+                    
+                    
+                    audio_bytes = b"".join(list(audio_iterator)) if not isinstance(audio_iterator, bytes) else audio_iterator
+                    
+                    try:
+                        play(audio_bytes)
+                    except Exception as e:
+                        print("Local Host Playback Failed. Pushing straight to frontend. Error:", e)
+                    
+    
+                    audio_b64 = base64.b64encode(audio_bytes).decode()
+                    st.session_state.component_args = {"audio_b64": audio_b64}
+                    st.rerun()
 
         elif action == "conversation_audio":
             audio_b64 = result.get('audio')
