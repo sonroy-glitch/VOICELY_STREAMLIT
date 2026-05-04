@@ -30,13 +30,22 @@
             },
         }
     </script>
-<style>html, body { overflow-y: auto !important; height: 100vh !important; min-height: 100vh !important; }</style></head>
+    <style>
+        html,
+        body {
+            overflow-y: auto !important;
+            height: 100vh !important;
+            min-height: 100vh !important;
+        }
+    </style>
+</head>
 
 <body class="bg-[#F9F9F9] font-body antialiased">
     <div class="flex min-h-screen">
 
         <!-- ====== SIDEBAR ====== -->
-        <aside id="sidebar" class="sidebar expanded shadow-card fixed md:static z-50 h-full -translate-x-full md:translate-x-0 transition-transform duration-300">
+        <aside id="sidebar"
+            class="sidebar expanded shadow-card fixed md:static z-50 h-full -translate-x-full md:translate-x-0 transition-transform duration-300">
             <!-- Logo -->
             <div class="h-16 flex items-center px-4 border-b" style="border-color:var(--border);">
                 <div class="w-8 h-8 gradient-brand rounded-lg flex items-center justify-center flex-shrink-0">
@@ -68,11 +77,14 @@
 
             <!-- Sidebar Footer Navigation -->
             <div class="p-3 border-t space-y-1" style="border-color:var(--border);">
-                <button id="btn-signout" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-semibold transition-all hover:bg-gray-50" style="color:var(--score-red);">
+                <button id="btn-signout"
+                    class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-semibold transition-all hover:bg-gray-50"
+                    style="color:var(--score-red);">
                     <span class="material-symbols-outlined text-base">logout</span>
                     <span class="nav-label">Sign Out</span>
                 </button>
-                <button id="sidebar-toggle" class="w-full flex items-center justify-center px-3 py-2 rounded-xl text-sm transition-all hover:bg-gray-50"
+                <button id="sidebar-toggle"
+                    class="w-full flex items-center justify-center px-3 py-2 rounded-xl text-sm transition-all hover:bg-gray-50"
                     style="color:var(--muted-foreground);">
                     <span class="material-symbols-outlined text-base" id="collapse-icon">chevron_left</span>
                 </button>
@@ -84,7 +96,8 @@
             <!-- Top bar -->
             <header class="h-16 bg-white border-b flex items-center px-4 md:px-6 sticky top-0 z-10 shadow-card"
                 style="border-color:var(--border);">
-                <button id="mobile-menu-btn" class="md:hidden mr-3 p-2 rounded-lg hover:bg-gray-100 flex items-center justify-center text-gray-500">
+                <button id="mobile-menu-btn"
+                    class="md:hidden mr-3 p-2 rounded-lg hover:bg-gray-100 flex items-center justify-center text-gray-500">
                     <span class="material-symbols-outlined">menu</span>
                 </button>
                 <div>
@@ -98,7 +111,7 @@
                         </div>
                         Voice Ready
                     </div>
-                   <div id="user-avatar"
+                    <div id="user-avatar"
                         class="w-9 h-9 gradient-brand rounded-full flex items-center justify-center text-white font-bold text-sm uppercase">
 
                     </div>
@@ -308,7 +321,8 @@
                                             <span id="conv-btn-label">Start Conversation</span>
                                         </button>
                                     </div>
-                                    <p class="text-xs mt-2" style="color:var(--muted-foreground);">Powered by Resemble-AI ·
+                                    <p class="text-xs mt-2" style="color:var(--muted-foreground);">Powered by
+                                        Resemble-AI ·
                                         Groq llama-3.3-70b · ElevenLabs</p>
                                 </div>
                             </div>
@@ -485,25 +499,33 @@
                         </div>
 
                         <div class="grid grid-cols-1 gap-6">
-                            
+
                             <!-- Paragraph Reader -->
-                            <div class="bg-white rounded-2xl border p-6 shadow-card flex flex-col space-y-4" style="border-color:var(--border);">
-                                <h3 class="font-semibold text-sm tracking-wide uppercase text-gray-500">Read This Aloud</h3>
-                                <p id="scoring-paragraph-text" class="text-sm leading-relaxed p-4 rounded-xl border italic" style="background:var(--accent); color:var(--foreground); border-color:var(--border);">
+                            <div class="bg-white rounded-2xl border p-6 shadow-card flex flex-col space-y-4"
+                                style="border-color:var(--border);">
+                                <h3 class="font-semibold text-sm tracking-wide uppercase text-gray-500">Read This Aloud
+                                </h3>
+                                <p id="scoring-paragraph-text"
+                                    class="text-sm leading-relaxed p-4 rounded-xl border italic"
+                                    style="background:var(--accent); color:var(--foreground); border-color:var(--border);">
                                     Generating paragraph...
                                 </p>
                                 <div class="flex flex-wrap items-center gap-3">
-                                    <button id="btn-score-mic" class="flex items-center justify-center gap-2 px-6 py-3 rounded-xl text-sm font-medium gradient-brand text-white shadow-primary hover:opacity-90 transition-all border border-transparent">
+                                    <button id="btn-score-mic"
+                                        class="flex items-center justify-center gap-2 px-6 py-3 rounded-xl text-sm font-medium gradient-brand text-white shadow-primary hover:opacity-90 transition-all border border-transparent">
                                         <span class="material-symbols-outlined text-base">mic</span>
                                         <span id="score-mic-label">Start Reading</span>
                                     </button>
-                                    <button id="btn-generate-paragraph" class="flex items-center justify-center gap-2 px-6 py-3 rounded-xl text-sm font-medium bg-white border shadow-card hover:bg-gray-50 transition-all" style="border-color:var(--border);color:var(--foreground);">
-                                        <span class="material-symbols-outlined text-base" id="icon-generate-paragraph">refresh</span>
+                                    <button id="btn-generate-paragraph"
+                                        class="flex items-center justify-center gap-2 px-6 py-3 rounded-xl text-sm font-medium bg-white border shadow-card hover:bg-gray-50 transition-all"
+                                        style="border-color:var(--border);color:var(--foreground);">
+                                        <span class="material-symbols-outlined text-base"
+                                            id="icon-generate-paragraph">refresh</span>
                                         <span>New HTML Paragraph</span>
                                     </button>
                                 </div>
                             </div>
-                            
+
                             <!-- Circular Score -->
                             <div class="bg-white rounded-2xl border p-6 shadow-card flex flex-col items-center max-w-md mx-auto w-full"
                                 style="border-color:var(--border);">
@@ -511,9 +533,10 @@
                                     <svg width="160" height="160" viewBox="0 0 160 160"
                                         style="transform:rotate(-90deg);">
                                         <circle cx="80" cy="80" r="60" fill="none" stroke="#F3F4F6" stroke-width="12" />
-                                        <circle id="score-circle-path" cx="80" cy="80" r="60" fill="none" stroke="url(#scoreGradDash)"
-                                            stroke-width="12" stroke-dasharray="376.99" stroke-dashoffset="49.01"
-                                            stroke-linecap="round" style="transition:all 1s;" />
+                                        <circle id="score-circle-path" cx="80" cy="80" r="60" fill="none"
+                                            stroke="url(#scoreGradDash)" stroke-width="12" stroke-dasharray="376.99"
+                                            stroke-dashoffset="49.01" stroke-linecap="round"
+                                            style="transition:all 1s;" />
                                         <defs>
                                             <linearGradient id="scoreGradDash" x1="0%" y1="0%" x2="100%" y2="0%">
                                                 <stop offset="0%" stop-color="#4A4A4A" />
@@ -533,7 +556,8 @@
                                     <div class="space-y-1.5">
                                         <div class="flex justify-between items-center">
                                             <span class="text-sm font-medium">Fluency</span>
-                                            <span id="txt-fluency" class="text-sm font-bold" style="color:var(--primary);">85%</span>
+                                            <span id="txt-fluency" class="text-sm font-bold"
+                                                style="color:var(--primary);">85%</span>
                                         </div>
                                         <div class="score-bar-track" style="background:rgba(74,74,74,0.12);">
                                             <div id="bar-fluency" class="score-bar-fill"
@@ -545,7 +569,8 @@
                                     <div class="space-y-1.5">
                                         <div class="flex justify-between items-center">
                                             <span class="text-sm font-medium">Accuracy</span>
-                                            <span id="txt-accuracy" class="text-sm font-bold" style="color:var(--primary);">91%</span>
+                                            <span id="txt-accuracy" class="text-sm font-bold"
+                                                style="color:var(--primary);">91%</span>
                                         </div>
                                         <div class="score-bar-track" style="background:rgba(20,184,166,0.1);">
                                             <div id="bar-accuracy" class="score-bar-fill"
@@ -557,7 +582,8 @@
                                     <div class="space-y-1.5">
                                         <div class="flex justify-between items-center">
                                             <span class="text-sm font-medium">Intonation</span>
-                                            <span id="txt-intonation" class="text-sm font-bold" style="color:var(--primary);">78%</span>
+                                            <span id="txt-intonation" class="text-sm font-bold"
+                                                style="color:var(--primary);">78%</span>
                                         </div>
                                         <div class="score-bar-track" style="background:rgba(107,107,107,0.1);">
                                             <div id="bar-intonation" class="score-bar-fill"
@@ -569,7 +595,8 @@
                                     <div class="space-y-1.5">
                                         <div class="flex justify-between items-center">
                                             <span class="text-sm font-medium">Rhythm</span>
-                                            <span id="txt-rhythm" class="text-sm font-bold" style="color:var(--primary);">82%</span>
+                                            <span id="txt-rhythm" class="text-sm font-bold"
+                                                style="color:var(--primary);">82%</span>
                                         </div>
                                         <div class="score-bar-track" style="background:rgba(56,189,248,0.1);">
                                             <div id="bar-rhythm" class="score-bar-fill"
@@ -584,6 +611,22 @@
                 </div>
         </main>
     </div>
+
+    <!-- Custom Alert Modal -->
+    <div id="custom-alert-modal" class="fixed inset-0 z-[100] hidden items-center justify-center">
+        <!-- Backdrop -->
+        <div class="absolute inset-0 bg-black/40 backdrop-blur-sm transition-opacity" id="custom-alert-backdrop"></div>
+        <!-- Modal Content -->
+        <div class="relative bg-white rounded-2xl p-6 max-w-sm w-[calc(100%-2rem)] shadow-xl animate-scale-in text-center border" style="border-color:var(--border);">
+            <div class="w-12 h-12 rounded-full mx-auto flex items-center justify-center mb-4" style="background:rgba(239,68,68,0.1);color:#EF4444;">
+                <span class="material-symbols-outlined text-2xl">error</span>
+            </div>
+            <h3 class="text-lg font-bold mb-2">Notice</h3>
+            <p id="custom-alert-message" class="text-sm mb-6" style="color:var(--muted-foreground);"></p>
+            <button id="custom-alert-close" class="w-full py-2.5 rounded-xl font-semibold text-sm transition-all bg-gray-100 hover:bg-gray-200" style="color:var(--foreground);">Got it</button>
+        </div>
+    </div>
+
     <script src="./streamlit-component-lib.js"></script>
     <script src="script.js"></script>
 </body>
