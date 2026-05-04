@@ -146,6 +146,13 @@ window.addEventListener("message", function(event) {
             }
         }
 
+        // --- Handle Cloning Success Payload ---
+        if (args && args.cloning_success) {
+            if (typeof window.unlockNavigation === "function") {
+                window.unlockNavigation();
+            }
+        }
+
         Streamlit.setFrameHeight();
     }
 });
