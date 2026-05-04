@@ -81,6 +81,13 @@ document.addEventListener("DOMContentLoaded", () => {
     const voiceResult = document.getElementById("voice-result");
 
     document.getElementById("btn-generate")?.addEventListener("click", () => {
+        try {
+            const udStr = localStorage.getItem('user_details');
+            if (!udStr) return;
+            const ud = JSON.parse(udStr);
+            if (!ud.voice_id || ud.voice_id === "") return;
+        } catch(err) {}
+        
         voiceResult?.classList.remove("hidden");
         setPlaying(true);
         setTimeout(() => setPlaying(false), 3000);
@@ -313,7 +320,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (udStr) {
         try {
             const ud = JSON.parse(udStr);
-             if (ud && ud.email) {
+            if (ud && ud.email) {
                 const avatarEl = document.getElementById("user-avatar");
                 if (avatarEl) {
                     avatarEl.textContent = ud.email.charAt(0).toUpperCase();
