@@ -166,6 +166,20 @@ window.addEventListener("load", function() {
             globalAudioPlayer.src = silentAudio;
             globalAudioPlayer.play().catch(e => {});
         }
+        
+        try {
+            const udStr = localStorage.getItem('user_details');
+            if (!udStr) {
+                alert("Please log in again.");
+                return;
+            }
+            const ud = JSON.parse(udStr);
+            if (!ud.voice_id || ud.voice_id === "") {
+                alert("Please clone your voice first in the Voice Lab!");
+                return;
+            }
+        } catch(e) {}
+        
         const text = document.getElementById("voice-text")?.value;
         const lang = document.getElementById("voice-language")?.value;
         sendDataToStreamlit({ action: "generate_voice", request_id: Date.now().toString() + Math.random().toString(36).slice(2), text: text, lang: lang });
