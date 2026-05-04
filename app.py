@@ -324,6 +324,8 @@ elif st.session_state.current_page == 'dashboard':
                             "voice_id": voice_id
                         })
                         st.session_state.user_data['voice_id'] = voice_id
+                        st.session_state.component_args = {"cloning_success": True}
+                        st.rerun()
                 except Exception as e:
                     print("Upload Sample Error:", e)
                     
