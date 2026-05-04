@@ -594,4 +594,36 @@ document.getElementById("btn-signout")?.addEventListener("click", () => {
         request_id: Date.now().toString() + Math.random().toString(36).slice(2)
     });
 });
+
+// ——————————————————————————————————————————————
+// Custom Alert Modal
+// ——————————————————————————————————————————————
+window.showCustomAlert = function(message) {
+    const modal = document.getElementById("custom-alert-modal");
+    const msgEl = document.getElementById("custom-alert-message");
+    if (modal && msgEl) {
+        msgEl.textContent = message;
+        modal.classList.remove("hidden");
+        modal.classList.add("flex");
+    } else {
+        alert(message);
+    }
+};
+
+document.getElementById("custom-alert-close")?.addEventListener("click", () => {
+    const modal = document.getElementById("custom-alert-modal");
+    if (modal) {
+        modal.classList.add("hidden");
+        modal.classList.remove("flex");
+    }
+});
+
+document.getElementById("custom-alert-backdrop")?.addEventListener("click", () => {
+    const modal = document.getElementById("custom-alert-modal");
+    if (modal) {
+        modal.classList.add("hidden");
+        modal.classList.remove("flex");
+    }
+});
+
 }); // Closes the window.addEventListener DOMContentLoaded
